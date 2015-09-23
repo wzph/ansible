@@ -1,0 +1,76 @@
+---
+- shell: ruby --version
+  register: kernel_ruby_installed_ruby_version
+  ignore_errors: yes
+  
+#- debug: var=kernel_ruby_installed_ruby_version
+
+- name: Install ruby prereqs
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  sudo: yes
+  with_items: '{{ kernel_ruby_packages }}'
+
+
+- name: Remove apt ruby
+  apt:
+    pkg: '{{ item }}'
+    state: absent
+    update_cache: yes
+    cache_valid_time: 86400
+  with_items: '{{ kernel_ruby_remove }}'
+
+
+- name: Set release_dir variable path
+  set_fact: kernel_ruby_build_dir=/tmp/ruby-{{ kernel_ruby_version_to_download }}
+  when: not kernel_ruby_installed_ruby_version.stdout | match( "ruby {{ kernel_ruby_version_as_installed }}" )
+
+
+- name: Download ruby
+  get_url:
+    url: http://ftp.ruby-lang.org/pub/ruby/ruby-{{ kernel_ruby_version_to_download }}.tar.gz
+    dest: /tmp/ruby-{{ kernel_ruby_version_to_download }}.tar.gz
+  when: not kernel_ruby_installed_ruby_version.stdout | match( "ruby {{ kernel_ruby_version_as_installed }}" )
+
+
+- name: Unarchive ruby
+  command: tar -xzvf /tmp/ruby-{{ kernel_ruby_version_to_download }}.tar.gz -C /tmp
+  when: not kernel_ruby_installed_ruby_version.stdout | match( "ruby {{ kernel_ruby_version_as_installed }}" )
+
+
+- name: Install ruby
+  command: '{{ item.command }}'
+  args:
+    creates: '{{ item.creates }}'
+    chdir: '{{ kernel_ruby_build_dir }}'
+  with_items:
+    - { command: ./configure, creates: ./Makefile }
+    - { command: make, creates: ./array.o }
+    - { command: make install, creates: ./alwaysinstall }
+  when: not kernel_ruby_installed_ruby_version.stdout | match( "ruby {{ kernel_ruby_version_as_installed }}" )
+
+
+- name: Update gemrc
+  lineinfile:
+    dest: ~{{ kernel_ruby_remote_user }}/.gemrc
+    create: yes
+    line: 'gem: --no-ri --no-rdoc'
+    insertafter: EOF
+    state: present
+    owner: '{{ kernel_ruby_remote_user }}'
+    group: '{{ kernel_ruby_remote_user }}'
+
+
+- name: Install required gems
+  gem:
+    executable: '{{ kernel_ruby_gem_executable }}'
+    name: '{{ item }}'
+    state: latest
+    pre_release: no
+    include_dependencies: yes
+    user_install: no
+  with_items: '{{ kernel_ruby_gems }}'

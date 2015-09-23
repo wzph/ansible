@@ -1,0 +1,4 @@
+---
+- name: Provision security
+  include: kernel_security_provision.yml
+  tags: "provision,security,provision:security"

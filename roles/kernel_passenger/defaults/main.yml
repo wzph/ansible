@@ -1,0 +1,12 @@
+---
+kernel_passenger_prereqs:
+  - apt-transport-https
+  - ca-certificates
+
+kernel_passenger_packages:
+  - nginx-extras
+  - passenger
+
+kernel_passenger_nginx_conf: Override me!
+
+kernel_passenger_remote_user: Override me!

@@ -1,0 +1,15 @@
+---
+kernel_security_ubuntu_release: trusty
+
+kernel_security_packages:
+  - fail2ban
+  - unattended-upgrades
+  - logwatch
+
+kernel_security_ports:
+  - 22/tcp
+  - 80/tcp
+  - 443/tcp
+
+kernel_security_root_password: Override me!
+

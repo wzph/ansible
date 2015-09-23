@@ -1,0 +1,4 @@
+---
+- name: Provision ruby
+  include: kernel_ruby_provision.yml
+  tags: "provision,ruby,provision:ruby"

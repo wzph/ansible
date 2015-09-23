@@ -1,0 +1,26 @@
+---
+kernel_nginx_packages:
+  - nginx
+
+kernel_nginx_conf_template: kernel_nginx.conf
+kernel_nginx_conf_file: /etc/nginx/nginx.conf
+
+kernel_nginx_unicorn_host: 127.0.0.1
+nginx_unicorn_port: 8080
+
+kernel_nginx_root: /home/www/serve/
+
+kernel_nginx_server_name: override.me
+kernel_nginx_server_ip: 127.0.0.1
+
+kernel_nginx_access_log: /var/log/nginx/access.log
+kernel_nginx_error_log: /var/log/nginx/error.log
+
+kernel_nginx_pid: /run/nginx.pid
+kernel_nginx_worker_count: 4
+kernel_nginx_user: www-data
+
+kernel_nginx_ssl_directory: /etc/nginx/ssl
+
+kernel_nginx_ssl_key: Override me!
+kernel_nginx_ssl_cert: Override me!

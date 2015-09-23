@@ -1,0 +1,60 @@
+---
+- name: Create kernel_bootstrap_remote_user group
+  group:
+    name: '{{ kernel_bootstrap_remote_user }}'
+    state: present
+    system: yes
+  remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
+
+- name: Create kernel_bootstrap_remote_user user
+  user:
+    name: '{{ kernel_bootstrap_remote_user }}'
+    state: present
+    createhome: yes
+    force: no
+    generate_ssh_key: no
+    groups: '{{ kernel_bootstrap_remote_user }}'
+    group: '{{ kernel_bootstrap_remote_user }}'
+    shell: /bin/bash
+  remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
+
+- name: Ensure kernel_bootstrap_remote_user is a sudoer
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^{{ kernel_bootstrap_remote_user }} ALL\='
+    line: '{{ kernel_bootstrap_remote_user }} ALL=(ALL) NOPASSWD:ALL'
+    validate: 'visudo -cf %s'
+  remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
+
+- name: Create ssh directory
+  file:
+    state: directory
+    path: /home/{{ kernel_bootstrap_remote_user }}/.ssh
+    owner: '{{ kernel_bootstrap_remote_user }}'
+    group: '{{ kernel_bootstrap_remote_user }}'
+    mode: u=rwx,g=,o=
+  remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
+
+- name: Place ssh id
+  template:
+    owner: '{{ kernel_bootstrap_remote_user }}'
+    group: '{{ kernel_bootstrap_remote_user }}'
+    mode: '{{ item.mode }}'
+    backup: yes
+    force: yes
+    src: '{{ item.src }}'
+    dest: /home/{{ kernel_bootstrap_remote_user }}/.ssh/{{ item.src }}
+  remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
+  with_items:
+    - { src: kernel_bootstrap_id_rsa.pub, mode: 'u=rw,g=r,o=r' }
+    - { src: kernel_bootstrap_id_rsa, mode: 'u=rw,g=,o=' }
+
+- name: Install current user's
+  authorized_key:
+    exclusive: yes
+    key: '{{ kernel_bootstrap_local_user_public_key }}'
+    manage_dir: yes
+    state: present
+    user: '{{ kernel_bootstrap_remote_user }}'
+  remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'

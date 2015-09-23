@@ -1,0 +1,4 @@
+---
+- name: Provision common
+  include: kernel_common_provision.yml
+  tags: "provision,common,provision:common"

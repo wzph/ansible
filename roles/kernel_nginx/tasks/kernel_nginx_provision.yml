@@ -1,0 +1,64 @@
+---
+- name: Install nginx and prereqs
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  sudo: yes
+  with_items: '{{ kernel_nginx_packages }}'
+
+
+- name: Place config
+  template:
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    backup: yes
+    force: yes
+    src: '{{ kernel_nginx_conf_template }}'
+    dest: '{{ kernel_nginx_conf_file }}'
+  sudo: yes
+
+
+- name: Remove some defaults
+  file:
+    path: '{{ item }}'
+    state: absent
+  with_items:
+    - /etc/nginx/sites-enabled/default
+    - /etc/nginx/sites-available/default
+  sudo: yes
+
+
+- name: Create ssl directory
+  file:
+    state: directory
+    owner: root
+    group: root
+    path: '{{ kernel_nginx_ssl_directory }}'
+    mode: u=rwx,g=rx,o=rx
+  sudo: yes
+
+
+- name: Place ssl cert
+  template:
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    force: yes
+    src: '{{ item }}'
+    dest: '{{ kernel_nginx_ssl_directory }}/{{ item }}'
+  sudo: yes
+  with_items:
+    - kernel_nginx_cert.crt
+    - kernel_nginx_cert.key
+
+
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+  sudo: yes
+

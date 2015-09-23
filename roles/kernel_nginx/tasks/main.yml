@@ -1,0 +1,4 @@
+---
+- name: Provision nginx
+  include: kernel_nginx_provision.yml
+  tags: "provision,nginx,provision:nginx"

@@ -1,0 +1,8 @@
+---
+kernel_common_packages:
+  - coreutils
+  - emacs
+  - git
+  - build-essential
+
+kernel_common_team_members: [] # Override me!

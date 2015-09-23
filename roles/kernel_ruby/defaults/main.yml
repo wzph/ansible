@@ -1,0 +1,29 @@
+---
+kernel_ruby_version_to_download: 2.2.3
+kernel_ruby_version_as_installed: 2.2.3
+
+kernel_ruby_remote_user: Override me!
+
+kernel_ruby_packages:
+  - curl
+  - zlib1g-dev
+  - build-essential
+  - libssl-dev
+  - libreadline-dev
+  - libyaml-dev
+  - libxml2-dev
+  - libxslt1-dev
+  - libcurl4-openssl-dev
+  - libffi-dev
+  - libpq-dev
+
+kernel_ruby_remove:
+  - ruby
+  - libruby1.9.1
+  - ruby1.9.1
+  - ruby1.9.3
+
+kernel_ruby_gems:
+  - rake
+
+kernel_ruby_gem_executable: /usr/local/bin/gem

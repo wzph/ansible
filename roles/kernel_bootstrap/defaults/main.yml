@@ -1,0 +1,6 @@
+---
+kernel_bootstrap_remote_user: deploy
+kernel_bootstrap_remote_bootstrap_user: root
+kernel_bootstrap_private_key: Override me!
+kernel_bootstrap_public_key: Override me!
+kernel_bootstrap_local_user_public_key: Override me!

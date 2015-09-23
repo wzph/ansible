@@ -1,0 +1,4 @@
+---
+- name: Provision bootstrap
+  include: kernel_bootstrap_provision.yml
+  tags: "provision,bootstrap,provision:bootstrap"

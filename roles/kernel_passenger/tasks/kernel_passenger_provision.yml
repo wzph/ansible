@@ -1,0 +1,66 @@
+---
+- name: Install Passenger prereqs
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  sudo: yes
+  with_items: '{{ kernel_passenger_prereqs }}'
+
+- name: Add some apt keys
+  apt_key:
+    state: present
+    validate_certs: yes
+    keyserver: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x561F9B9CAC40B2F7
+    id: AC40B2F7
+  sudo: yes
+
+- name: Add some apt repositories
+  apt_repository:
+    repo: '{{ item }}'
+    state: present
+    mode: 420
+    update_cache: yes
+    validate_certs: yes
+  with_items:
+    - 'deb https://oss-binaries.phusionpassenger.com/apt/passenger trusty main'
+  sudo: yes
+
+- name: Install Passenger packages
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  sudo: yes
+  with_items: '{{ kernel_passenger_packages }}'
+
+- name: Check if nginx is installed
+  stat:
+    path: '{{ kernel_passenger_nginx_conf }}'
+  register: kernel_passenger_nginx_stat
+
+- name: Set passenger_root
+  lineinfile:
+    dest: '{{ kernel_passenger_nginx_conf }}'
+    state: present
+    regexp: '^\s*passenger_root'
+    line: 'passenger_root /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini;'
+    insertafter: '^\s*html\s*\{'
+    validate: 'nginx -t -c %s'
+  sudo: yes
+  when: kernel_passenger_nginx_stat.stat.isreg is defined and kernel_passenger_nginx_stat.isreg
+
+- name: Set passenger_ruby values
+  lineinfile:
+    dest: '{{ kernel_passenger_nginx_conf }}'
+    state: present
+    regexp: '^\s*passenger_ruby'
+    line: 'passenger_ruby /usr/bin/passenger_free_ruby;'
+    insertafter: '^\s*html\s*\{'
+    validate: 'nginx -t -c %s'
+  sudo: yes
+  when: kernel_passenger_nginx_stat.stat.isreg is defined and kernel_passenger_nginx_stat.isreg

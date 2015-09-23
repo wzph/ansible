@@ -1,0 +1,4 @@
+---
+- name: Provision Passenger
+  include: kernel_passenger_provision.yml
+  tags: "provision,passenger,provision:passenger"

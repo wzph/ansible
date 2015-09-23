@@ -1,0 +1,93 @@
+---
+- name: Change root password
+  user:
+    name: root
+    password: '{{ kernel_security_root_password }}'
+  sudo: yes
+
+
+- name: Upgrade apt to the lastest packages
+  apt:
+    upgrade: safe
+  sudo: yes
+
+
+- name: Install security prereqs
+  apt:
+    name: '{{ item }}'
+    state: installed
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  sudo: yes
+  with_items: '{{ kernel_security_packages }}'
+
+
+- name: Eliminate sudo group
+  lineinfile:
+    dest: /etc/sudoers
+    state: absent
+    regexp: '^%sudo'
+    validate: 'visudo -cf %s'
+  sudo: yes
+
+
+- name: Disallow password authentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+    state: present
+  sudo: yes
+
+
+- name: Adjust APT update intervals
+  copy:
+    src: kernel_security_apt_periodic
+    dest: /etc/apt/apt.conf.d/10periodic
+  sudo: yes
+
+
+- name: Make sure unattended-upgrades only installs from {{ kernel_security_ubuntu_release }}-security
+  lineinfile:
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    regexp: "{{ kernel_security_ubuntu_release }}-updates"
+    state: absent
+  sudo: yes
+
+
+- name: Setup ufw
+  shell: ufw allow {{ item }}
+  sudo: yes
+  with_items: '{{ kernel_security_ports }}'
+
+
+- name: Enable ufw
+  shell: echo 'y' | ufw enable
+  sudo: yes
+
+
+#- name: Disallow root SSH access
+#  lineinfile:
+#    dest: /etc/ssh/sshd_config
+#    regexp: "^PermitRootLogin"
+#    line: "PermitRootLogin no"
+#    state: present
+#  sudo: yes
+
+
+- name: Don't hash known_hosts entries
+  lineinfile:
+    dest: /etc/ssh/ssh_config
+    state: present
+    regexp: '^\s*HashKnownHosts'
+    line: '    HashKnownHosts no'
+    validate: 'echo %s > /dev/null ; sudo sshd -t' # %s must be present :(
+  sudo: yes
+
+
+- name: Restart ssh
+  service:
+    name: ssh
+    state: restarted
+  sudo: yes
