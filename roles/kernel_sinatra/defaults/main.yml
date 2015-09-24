@@ -1,0 +1,3 @@
+---
+kernel_sinatra_gems:
+  - sinatra

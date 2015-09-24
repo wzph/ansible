@@ -5,8 +5,8 @@ kernel_nginx_packages:
 kernel_nginx_conf_template: kernel_nginx.conf
 kernel_nginx_conf_file: /etc/nginx/nginx.conf
 
-kernel_nginx_unicorn_host: 127.0.0.1
-nginx_unicorn_port: 8080
+kernel_nginx_upstream_host: 127.0.0.1
+kernel_nginx_upstream_port: 8080
 
 kernel_nginx_root: /home/www/serve/
 

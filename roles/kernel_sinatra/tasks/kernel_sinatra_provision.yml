@@ -1,0 +1,11 @@
+---
+- name: Install sinatra gems
+  gem:
+    executable: /usr/local/bin/gem
+    name: '{{ item }}'
+    state: latest
+    pre_release: no
+    include_dependencies: yes
+    user_install: no
+  with_items: '{{ kernel_sinatra_gems }}'
+  sudo: yes

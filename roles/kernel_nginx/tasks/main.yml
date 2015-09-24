@@ -2,3 +2,7 @@
 - name: Provision nginx
   include: kernel_nginx_provision.yml
   tags: "provision,nginx,provision:nginx"
+
+- name: Deploy nginx
+  include: kernel_nginx_deploy.yml
+  tags: "deploy,nginx,deploy:nginx"

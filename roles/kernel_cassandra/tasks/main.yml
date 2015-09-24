@@ -1,0 +1,4 @@
+---
+- name: Provision cassandra
+  include: kernel_cassandra_provision.yml
+  tags: "provision,cassandra,provision:cassandra"

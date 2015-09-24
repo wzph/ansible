@@ -1,0 +1,30 @@
+---
+- shell: /bin/bash -c "source ~/.profile && cassandra -v"
+  register: kernel_cassandra_installed
+  ignore_errors: yes
+  sudo: no
+
+- name: Install cassandra
+  include: kernel_cassandra_install.yml
+  when: kernel_cassandra_installed.stdout != kernel_cassandra_version
+
+- name: Update PATH
+  lineinfile:
+    dest: ~{{ kernel_cassandra_remote_user }}/{{ item }}
+    create: yes
+    line: 'export PATH="/home/{{ kernel_cassandra_remote_user }}/apache-cassandra-{{ kernel_cassandra_version }}/bin:$PATH"'
+    state: present
+    owner: '{{ kernel_cassandra_remote_user }}'
+    group: '{{ kernel_cassandra_remote_user }}'
+  with_items: 
+    - .bashrc
+    - .profile
+
+- name: Create cassandra directories
+  file:
+    state: directory
+    path: '{{ item }}'
+  sudo: yes
+  with_items:
+    - /var/lib/cassandra
+    - /var/log/cassandra

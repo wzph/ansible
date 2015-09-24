@@ -1,0 +1,5 @@
+---
+kernel_cassandra_packages:
+  - openjdk-7-jdk
+kernel_cassandra_version: 2.2.1
+kernel_cassandra_remote_user: overrideme

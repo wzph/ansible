@@ -1,0 +1,4 @@
+---
+- name: Provision sinatra
+  include: kernel_sinatra_provision.yml
+  tags: "provision,sinatra,provision:sinatra"

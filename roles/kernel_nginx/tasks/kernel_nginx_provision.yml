@@ -48,17 +48,9 @@
     group: root
     mode: u=rw,g=r,o=r
     force: yes
-    src: '{{ item }}'
-    dest: '{{ kernel_nginx_ssl_directory }}/{{ item }}'
+    src: '{{ item.src }}'
+    dest: '{{ kernel_nginx_ssl_directory }}/{{ item.dest }}'
   sudo: yes
   with_items:
-    - kernel_nginx_cert.crt
-    - kernel_nginx_cert.key
-
-
-- name: Restart nginx
-  service:
-    name: nginx
-    state: restarted
-  sudo: yes
-
+    - { src: kernel_nginx_cert.crt, dest: cert.crt }
+    - { src: kernel_nginx_cert.key, dest: cert.key }
