@@ -22,12 +22,6 @@
   sudo: yes
   register: kernel_cassandra_checksum
 
-#- debug: var=kernel_cassandra_checksum.stat.checksum
-  #when: kernel_cassandra_installed.stdout != kernel_cassandra_version
-
-#- debug: var=kernel_cassandra_installed
-#- debug: var=kernel_cassandra_version
-
 - fail:
     msg: Downloaded cassandra tarball does not have expected checksum.  Intruders!
   when: not kernel_cassandra_checksum.stat.checksum == "393b76f3c597d96697d2163f255a8024d2f22d8d"
