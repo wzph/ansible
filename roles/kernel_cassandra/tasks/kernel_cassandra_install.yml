@@ -1,14 +1,4 @@
 ---
-- name: Install cassandra packages
-  apt:
-    pkg: '{{ item }}'
-    state: latest
-    update_cache: yes
-    cache_valid_time: 86400
-    install_recommends: yes
-  with_items: '{{ kernel_cassandra_packages }}'
-  sudo: yes
-
 - name: Download cassandra
   get_url:
     url: http://www.us.apache.org/dist/cassandra/{{ kernel_cassandra_version }}/apache-cassandra-{{ kernel_cassandra_version }}-bin.tar.gz

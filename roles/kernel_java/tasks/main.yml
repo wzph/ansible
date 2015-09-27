@@ -1,0 +1,4 @@
+---
+- name: Provision java
+  include: kernel_java_provision.yml
+  tags: "provision,java,provision:java"

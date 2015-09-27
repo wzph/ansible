@@ -1,0 +1,34 @@
+---
+- name: Add the java apt key
+  apt_key:
+    state: present
+    validate_certs: yes
+    keyserver: '{{ kernel_java_apt_keyserver }}'
+    id: '{{ kernel_java_apt_key_id }}'
+  sudo: yes
+
+- name: Add the java apt repo
+  apt_repository:
+    repo: '{{ kernel_java_apt_repo }}'
+    state: present
+    mode: 420
+    update_cache: yes
+    validate_certs: yes
+  sudo: yes
+
+- name: Accept the Java license before installing (silent option)
+  shell: /bin/bash -c "echo debconf shared/accepted-oracle-license-v1-1 {{ item }} true | debconf-set-selections"
+  sudo: yes
+  with_items:
+    - select
+    - seen
+  when: kernel_java_apt_package.find( 'oracle' ) != -1
+
+- name: Install java package
+  apt:
+    pkg: '{{ kernel_java_apt_package }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  sudo: yes
