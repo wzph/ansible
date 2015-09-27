@@ -27,3 +27,83 @@
 - name: Turn off zone_reclaim_mode
   shell: /bin/bash -c "echo 0 > /proc/sys/vm/zone_reclaim_mode"
   sudo: yes
+
+- name: Cassandra limits a
+  lineinfile:
+    dest: /etc/security/limits.d/cassandra.conf
+    create: yes
+    line: '{{ item }}'
+    state: present
+  with_items:
+    - cassandra - memlock unlimited
+    - cassandra - nofile 100000
+    - cassandra - nproc 32768
+    - cassandra - as unlimited
+  sudo: yes
+
+- name: Cassandra limits b
+  lineinfile:
+    dest: /etc/security/limits.conf
+    create: yes
+    line: '{{ item }}'
+    state: present
+  with_items:
+    - '* - memlock unlimited'
+    - '* - nofile 100000'
+    - '* - nproc 32768'
+    - '* - as unlimited'
+  sudo: yes
+
+- name: Cassandra limits c
+  lineinfile:
+    dest: /etc/sysctl.conf
+    create: yes
+    line: vm.max_map_count = 131072
+    state: present
+  sudo: yes
+
+- name: Make the cassandra limits take effect
+  shell: /bin/bash -c "sysctl -p {{ item }}"
+  sudo: yes
+  with_items:
+    - /etc/security/limits.d/cassandra.conf
+    - /etc/security/limits.conf
+
+- name: Start cassandra
+  shell: /bin/bash -c "nohup /home/deploy/apache-cassandra-2.2.1/bin/cassandra"
+  ignore_errors: yes
+  sudo: no
+
+- name: Wait for cassandra to start
+  shell: /bin/bash -c "/home/deploy/apache-cassandra-2.2.1/bin/cqlsh -e 'DESCRIBE keyspaces;'"
+  register: kernel_cassandra_health
+  until: "kernel_cassandra_health.rc == 0"
+  retries: 3
+  delay: 5
+  ignore_errors: yes
+
+- name: Stop cassandra
+  shell: /bin/bash -c "kill -9 `ps aux | grep [c]assandra | awk '{print $2}'`"
+  ignore_errors: yes
+  sudo: no
+
+- name: Wait for cassandra to stop
+  shell: /bin/bash -c "/home/deploy/apache-cassandra-2.2.1/bin/cqlsh -e 'DESCRIBE keyspaces;'"
+  register: kernel_cassandra_health
+  until: "kernel_cassandra_health.rc != 0"
+  retries: 3
+  delay: 5
+  ignore_errors: yes
+
+- name: Start cassandra
+  shell: /bin/bash -c "nohup /home/deploy/apache-cassandra-2.2.1/bin/cassandra"
+  ignore_errors: yes
+  sudo: no
+
+- name: Wait for cassandra to start
+  shell: /bin/bash -c "/home/deploy/apache-cassandra-2.2.1/bin/cqlsh -e 'DESCRIBE keyspaces;'"
+  register: kernel_cassandra_health
+  until: "kernel_cassandra_health.rc == 0"
+  retries: 3
+  delay: 5
+  ignore_errors: yes
