@@ -23,3 +23,7 @@
   with_items:
     - /var/lib/cassandra
     - /var/log/cassandra
+
+- name: Turn off zone_reclaim_mode
+  shell: /bin/bash -c "echo 0 > /proc/sys/vm/zone_reclaim_mode"
+  sudo: yes
