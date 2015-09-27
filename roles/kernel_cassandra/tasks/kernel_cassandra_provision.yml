@@ -1,6 +1,7 @@
 ---
 - name: Install cassandra
   include: kernel_cassandra_install.yml
+  creates: /home/{{ kernel_cassandra_remote_user }}/apache-cassandra-{{ kernel_cassandra_version }}/bin/cassandra
 
 - name: Update PATH
   lineinfile:
@@ -13,6 +14,7 @@
   with_items: 
     - .bashrc
     - .profile
+
 - name: Create cassandra directories
   file:
     state: directory
