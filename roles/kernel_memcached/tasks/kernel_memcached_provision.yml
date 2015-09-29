@@ -1,0 +1,27 @@
+---
+- name: Install memcached and prereqs
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  sudo: yes
+  with_items: '{{ kernel_memcached_packages }}'
+
+- name: Place config
+  template:
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+    backup: yes
+    force: yes
+    src: '{{ kernel_memcached_conf_template }}'
+    dest: '{{ kernel_memcached_conf_file }}'
+  sudo: yes
+
+- name: Restart memcached
+  service:
+    name: memcached
+    state: restarted
+  sudo: yes

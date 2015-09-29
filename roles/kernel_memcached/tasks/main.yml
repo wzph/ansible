@@ -1,0 +1,8 @@
+---
+- name: Provision memcached
+  include: kernel_memcached_provision.yml
+  tags: "provision,memcached,provision:memcached"
+
+- name: Deploy memcached
+  include: kernel_memcached_deploy.yml
+  tags: "deploy,memcached,deploy:memcached"

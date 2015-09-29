@@ -1,0 +1,23 @@
+---
+kernel_memcached_packages:
+  - memcached
+
+kernel_memcached_log_file: /var/log/memcached.log
+
+# Options are -v, -vv
+kernel_memcached_verbosity: -v
+
+
+# Megs
+kernel_memcached_memory: 64
+
+kernel_memcached_port: 11211
+
+kernel_memcached_user: memcache
+
+kernel_memcached_ip_address: 127.0.0.1
+
+kernel_memcached_connection_limit: 1024
+
+kernel_memcached_conf_template: memcached.conf
+kernel_memcached_conf_file: /etc/memcached.conf
