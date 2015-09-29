@@ -1,13 +1,13 @@
 ---
 - name: Install cassandra
   include: kernel_cassandra_install.yml
-  creates: /home/{{ kernel_cassandra_remote_user }}/apache-cassandra-{{ kernel_cassandra_version }}/bin/cassandra
+  creates: ~{{ kernel_cassandra_cassandra_home }}/bin/cassandra
 
 - name: Update PATH
   lineinfile:
     dest: ~{{ kernel_cassandra_remote_user }}/{{ item }}
     create: yes
-    line: 'export PATH="/home/{{ kernel_cassandra_remote_user }}/apache-cassandra-{{ kernel_cassandra_version }}/bin:$PATH"'
+    line: 'export PATH="{{ kernel_cassandra_cassandra_home }}/bin:$PATH"'
     state: present
     owner: '{{ kernel_cassandra_remote_user }}'
     group: '{{ kernel_cassandra_remote_user }}'
@@ -70,12 +70,12 @@
     - /etc/security/limits.conf
 
 - name: Start cassandra
-  shell: /bin/bash -c "nohup /home/deploy/apache-cassandra-2.2.1/bin/cassandra"
+  shell: /bin/bash -c "nohup {{ kernel_cassandra_cassandra_home }}/bin/cassandra"
   ignore_errors: yes
   sudo: no
 
 - name: Wait for cassandra to start
-  shell: /bin/bash -c "/home/deploy/apache-cassandra-2.2.1/bin/cqlsh -e 'DESCRIBE keyspaces;'"
+  shell: /bin/bash -c "{{ kernel_cassandra_cassandra_home }}/bin/cqlsh -e 'DESCRIBE keyspaces;'"
   register: kernel_cassandra_health
   until: "kernel_cassandra_health.rc == 0"
   retries: 3
@@ -88,7 +88,7 @@
   sudo: no
 
 - name: Wait for cassandra to stop
-  shell: /bin/bash -c "/home/deploy/apache-cassandra-2.2.1/bin/cqlsh -e 'DESCRIBE keyspaces;'"
+  shell: /bin/bash -c "{{ kernel_cassandra_cassandra_home }}/bin/cqlsh -e 'DESCRIBE keyspaces;'"
   register: kernel_cassandra_health
   until: "kernel_cassandra_health.rc != 0"
   retries: 3
@@ -96,12 +96,12 @@
   ignore_errors: yes
 
 - name: Start cassandra
-  shell: /bin/bash -c "nohup /home/deploy/apache-cassandra-2.2.1/bin/cassandra"
+  shell: /bin/bash -c "nohup {{ kernel_cassandra_cassandra_home }}/bin/cassandra"
   ignore_errors: yes
   sudo: no
 
 - name: Wait for cassandra to start
-  shell: /bin/bash -c "/home/deploy/apache-cassandra-2.2.1/bin/cqlsh -e 'DESCRIBE keyspaces;'"
+  shell: /bin/bash -c "{{ kernel_cassandra_cassandra_home }}/bin/cqlsh -e 'DESCRIBE keyspaces;'"
   register: kernel_cassandra_health
   until: "kernel_cassandra_health.rc == 0"
   retries: 3
