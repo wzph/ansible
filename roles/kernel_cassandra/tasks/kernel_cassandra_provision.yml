@@ -19,9 +19,11 @@
   file:
     state: directory
     path: '{{ item }}'
+    owner: root
+    group: '{{ kernel_cassandra_remote_user }}'
+    mode: u=rwx,g=rwx,o=rx
   sudo: yes
   with_items:
-    - /var/lib/cassandra
     - /var/log/cassandra
 
 - name: Turn off zone_reclaim_mode
@@ -68,6 +70,19 @@
   with_items:
     - /etc/security/limits.d/cassandra.conf
     - /etc/security/limits.conf
+
+- name: Place config
+  template:
+    owner: '{{ kernel_cassandra_remote_user }}'
+    group: '{{ kernel_cassandra_remote_user }}'
+    mode: u=rw,g=r,o=r
+    backup: yes
+    force: yes
+    src: '{{ item.src }}'
+    dest: '{{ kernel_cassandra_cassandra_home }}/conf/{{ item.dest }}'
+  sudo: yes
+  with_items:
+    - { src: logback.xml, dest: logback.xml }
 
 - name: Start cassandra
   shell: /bin/bash -c "nohup {{ kernel_cassandra_cassandra_home }}/bin/cassandra"

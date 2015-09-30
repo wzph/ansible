@@ -2,3 +2,5 @@
 kernel_cassandra_version: 2.2.1
 kernel_cassandra_remote_user: overrideme
 kernel_cassandra_cassandra_home: ~{{ kernel_cassandra_remote_user }}/cassandra
+kernel_cassandra_log_dir: /var/log/cassandra
+kernel_cassandra_log_file: system.log
