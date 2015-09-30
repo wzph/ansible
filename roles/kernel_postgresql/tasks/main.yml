@@ -1,0 +1,4 @@
+---
+- name: Provision postgresql
+  include: kernel_postgresql_provision.yml
+  tags: "provision,postgresql,provision:postgresql"
