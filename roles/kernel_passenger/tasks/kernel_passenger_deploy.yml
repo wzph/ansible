@@ -1,9 +1,16 @@
 ---
-- name: Stop passenger
-  shell: /bin/bash -c "cd {{ kernel_marquee_deploy_root }}/current && bundle exec passenger stop --pid-file {{ kernel_marquee_deploy_root }}/passenger.pid"
-  sudo: no
+- name: Determine whether we can safely restart passenger
+  shell: /bin/bash -c "ls {{ kernel_passenger_root }}"
+  register: kernel_passenger_restartable
   ignore_errors: yes
 
-- name: Start passenger
-  shell: /bin/bash -c "cd {{ kernel_marquee_deploy_root }}/current && bundle exec passenger start --address {{ kernel_passenger_host }} --port {{ kernel_passenger_port }} --daemonize --log-file {{ kernel_passenger_log_file }} --pid-file {{ kernel_marquee_deploy_root }}/passenger.pid"
+- name: Stop passenger
+  shell: /bin/bash -c "cd {{ kernel_passenger_root }} && bundle exec passenger stop --pid-file {{ kernel_passenger_pid_file }}"
   sudo: no
+  ignore_errors: yes
+  when: kernel_passenger_restartable.rc == 0
+
+- name: Start passenger
+  shell: /bin/bash -c "cd {{ kernel_passenger_root }} && bundle exec passenger start --address {{ kernel_passenger_host }} --port {{ kernel_passenger_port }} --daemonize --log-file {{ kernel_passenger_log_file }} --pid-file {{ kernel_passenger_pid_file }}"
+  sudo: no
+  when: kernel_passenger_restartable.rc == 0

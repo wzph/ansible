@@ -14,3 +14,6 @@ kernel_passenger_remote_user: Override me!
 kernel_passenger_log_file: /var/log/passenger.log
 kernel_passenger_host: 127.0.0.1
 kernel_passenger_port: 3000
+
+kernel_passenger_root: /override/me
+kernel_passenger_pid_file: override/me.pid
