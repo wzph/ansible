@@ -9,3 +9,12 @@
     user_install: no
   with_items: '{{ kernel_sinatra_gems }}'
   sudo: yes
+
+- name: Set permissions on log file
+  file:
+    path: '{{ kernel_sinatra_log_file }}'
+    state: touch
+    owner: '{{ kernel_sinatra_user }}'
+    group: '{{ kernel_sinatra_user }}'
+    mode: u=rw,g=rw,o=r
+  sudo: yes
