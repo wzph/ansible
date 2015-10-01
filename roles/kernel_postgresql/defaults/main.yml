@@ -15,3 +15,5 @@ kernel_postgresql_port: 5432
 
 kernel_postgresql_databases:
   - 'override'
+
+kernel_postgresql_log_prefix: '%t'
