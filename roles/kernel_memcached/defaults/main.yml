@@ -4,9 +4,8 @@ kernel_memcached_packages:
 
 kernel_memcached_log_file: /var/log/memcached.log
 
-# Options are -v, -vv
+# Options are -v, -vv, -vvv
 kernel_memcached_verbosity: -v
-
 
 # Megs
 kernel_memcached_memory: 64

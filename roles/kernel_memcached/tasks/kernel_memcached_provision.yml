@@ -25,3 +25,12 @@
     name: memcached
     state: restarted
   sudo: yes
+
+- name: Set permissions on log file
+  file:
+    path: '{{ kernel_memcached_log_file }}'
+    state: touch
+    owner: '{{ kernel_memcached_user }}'
+    group: '{{ kernel_memcached_user }}'
+    mode: u=rw,g=rw,o=r
+  sudo: yes
