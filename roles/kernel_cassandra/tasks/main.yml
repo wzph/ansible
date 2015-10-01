@@ -1,4 +1,6 @@
 ---
+- fail:
+    msg: This role should be updated to place the cassandra data files outside of the untarred directory.
 - name: Provision cassandra
   include: kernel_cassandra_provision.yml
   tags: "provision,cassandra,provision:cassandra"
