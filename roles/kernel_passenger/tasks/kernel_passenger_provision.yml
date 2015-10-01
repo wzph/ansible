@@ -64,3 +64,12 @@
     validate: 'nginx -t -c %s'
   sudo: yes
   when: kernel_passenger_nginx_stat.stat.isreg is defined and kernel_passenger_nginx_stat.isreg
+
+- name: Set permissions on log file
+  file:
+    path: '{{ kernel_passenger_log_file }}'
+    state: touch
+    owner: '{{ kernel_passenger_remote_user }}'
+    group: '{{ kernel_passenger_remote_user }}'
+    mode: u=rw,g=rw,o=r
+  sudo: yes

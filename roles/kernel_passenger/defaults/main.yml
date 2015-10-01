@@ -10,3 +10,7 @@ kernel_passenger_packages:
 kernel_passenger_nginx_conf: Override me!
 
 kernel_passenger_remote_user: Override me!
+
+kernel_passenger_log_file: /var/log/passenger.log
+kernel_passenger_host: 127.0.0.1
+kernel_passenger_port: 3000

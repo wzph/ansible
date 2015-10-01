@@ -2,3 +2,7 @@
 - name: Provision Passenger
   include: kernel_passenger_provision.yml
   tags: "provision,passenger,provision:passenger"
+
+- name: Deploy Passenger
+  include: kernel_passenger_deploy.yml
+  tags: "deploy,passenger,deploy:passenger"

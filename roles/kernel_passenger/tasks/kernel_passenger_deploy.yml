@@ -1,0 +1,9 @@
+---
+- name: Stop passenger
+  shell: /bin/bash -c "cd {{ kernel_marquee_deploy_root }}/current && bundle exec passenger stop --pid-file {{ kernel_marquee_deploy_root }}/passenger.pid"
+  sudo: no
+  ignore_errors: yes
+
+- name: Start passenger
+  shell: /bin/bash -c "cd {{ kernel_marquee_deploy_root }}/current && bundle exec passenger start --address {{ kernel_passenger_host }} --port {{ kernel_passenger_port }} --daemonize --log-file {{ kernel_passenger_log_file }} --pid-file {{ kernel_marquee_deploy_root }}/passenger.pid"
+  sudo: no
