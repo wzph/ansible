@@ -2,3 +2,7 @@
 - name: Provision postgresql
   include: kernel_postgresql_provision.yml
   tags: "provision,postgresql,provision:postgresql"
+
+- name: Deploy postgresql
+  include: kernel_postgresql_deploy.yml
+  tags: "deploy,postgresql,deploy:postgresql"
