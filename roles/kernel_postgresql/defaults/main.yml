@@ -1,6 +1,7 @@
 ---
+kernel_postgresql_version: 9.4
 kernel_postgresql_packages:
-  - postgresql
+  - postgresql-{{ kernel_postgresql_version }}
   - libpq-dev
   - python-psycopg2
 
