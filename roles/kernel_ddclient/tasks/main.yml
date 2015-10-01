@@ -1,0 +1,4 @@
+---
+- name: Provision ddclient
+  include: kernel_ddclient_provision.yml
+  tags: "provision,ddclient,provision:ddclient"
