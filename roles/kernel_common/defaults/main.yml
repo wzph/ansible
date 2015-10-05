@@ -4,5 +4,6 @@ kernel_common_packages:
   - emacs
   - git
   - build-essential
+  - ntp
 
 kernel_common_team_members: [] # Override me!
