@@ -50,7 +50,7 @@
     - { src: kernel_bootstrap_id_rsa.pub, mode: 'u=rw,g=r,o=r' }
     - { src: kernel_bootstrap_id_rsa, mode: 'u=rw,g=,o=' }
 
-- name: Install current user's
+- name: Authorize current user's key
   authorized_key:
     exclusive: yes
     key: '{{ kernel_bootstrap_local_user_public_key }}'
