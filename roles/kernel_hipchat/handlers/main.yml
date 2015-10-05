@@ -1,0 +1,22 @@
+---
+# You can invoke this with something like the following
+
+# notify: Hipchat Message
+
+# Note that nothing will happen unless kernel_hipchat_message is defined.
+# It is not defined by default.
+
+- name: Hipchat Message
+  hipchat:
+    api: '{{ kernel_hipchat_api }}'
+    color: '{{ kernel_hipchat_color }}'
+    from: '{{ kernel_hipchat_from }}'
+    msg: '{{ kernel_hipchat_message }}'
+    msg_format: '{{ kernel_hipchat_message_format }}'
+    notify: '{{ kernel_hipchat_notify }}'
+    room: '{{ kernel_hipchat_room }}'
+    token: '{{ kernel_hipchat_token }}'
+    validate_certs: '{{ kernel_hipchat_validate_certs }}'
+  when: kernel_hipchat_message is defined
+  connection: local
+  sudo: no

@@ -1,0 +1,10 @@
+---
+kernel_hipchat_token: override me
+kernel_hipchat_api: https://api.hipchat.com/v2/
+kernel_hipchat_color: green
+kernel_hipchat_from: Kernel Bot
+kernel_hipchat_message_format: text
+kernel_hipchat_notify: no
+kernel_hipchat_room: Kernel Dev Team
+kernel_hipchat_token: override me
+kernel_hipchat_validate_certs: yes
