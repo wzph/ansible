@@ -1,0 +1,4 @@
+---
+- name: Provision ntpd
+  include: kernel_ntpd_provision.yml
+  tags: "provision,ntpd,provision:ntpd"
