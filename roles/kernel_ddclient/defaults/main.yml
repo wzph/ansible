@@ -1,4 +1,6 @@
 ---
+kernel_ddclient_packages:
+  - ddclient
 kernel_ddclient_noip_username: override me
 kernel_ddclient_noip_password: override me
 kernel_ddclient_noip_fqdn: override.me

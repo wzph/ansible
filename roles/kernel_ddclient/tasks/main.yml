@@ -2,3 +2,7 @@
 - name: Provision ddclient
   include: kernel_ddclient_provision.yml
   tags: "provision,ddclient,provision:ddclient"
+
+- name: Deploy ddclient
+  include: kernel_ddclient_deploy.yml
+  tags: "deploy,ddclient,deploy:ddclient"

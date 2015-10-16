@@ -1,19 +1,25 @@
 ---
-- name: Place ddclient.conf
+- name: Install ddclient packages
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  with_items: '{{ kernel_ddclient_packages }}'
+  when: kernel_ddclient_skip is undefined or not kernel_ddclient_skip
+
+- name: Place ddclient files
   template:
-    dest: /etc/ddclient.conf
-    src: ddclient.conf
+    dest: '{{ item.dest }}'
+    src: '{{ item.src }}'
     owner: root
     group: root
     mode: u=rw,g=,o=
     backup: no
     force: yes
   sudo: yes
-  when: kernel_ddclient_skip is undefined or not kernel_ddclient_skip
-
-- name: Restart ddclient
-  service:
-    name: ddclient
-    state: restarted
-  sudo: yes
+  with_items:
+    - { dest: /etc/ddclient.conf, src: ddclient.conf }
+    - { dest: /etc/default/ddclient, src: ddclient }
   when: kernel_ddclient_skip is undefined or not kernel_ddclient_skip
