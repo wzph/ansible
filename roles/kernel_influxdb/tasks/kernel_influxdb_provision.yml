@@ -1,0 +1,9 @@
+---
+- name: Install influxdb packages
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  with_items: '{{ kernel_influxdb_packages }}'

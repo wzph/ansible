@@ -1,0 +1,8 @@
+---
+- name: Provision influxdb
+  include: kernel_influxdb_provision.yml
+  tags: "provision,influxdb,provision:influxdb"
+
+- name: Deploy influxdb
+  include: kernel_influxdb_deploy.yml
+  tags: "deploy,influxdb,deploy:influxdb"
