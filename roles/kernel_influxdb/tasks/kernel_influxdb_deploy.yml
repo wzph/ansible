@@ -1,0 +1,8 @@
+---
+
+# Deploying is insufficient to restart influxdb
+- name: Start influxdb
+  service:
+    name: influxdb
+    state: started
+  sudo: yes

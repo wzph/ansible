@@ -1,4 +1,22 @@
 ---
+- name: Add influxdb apt key
+  apt_key:
+    state: present
+    validate_certs: yes
+    url: https://repos.influxdata.com/influxdb.key
+  sudo: yes
+
+- name: Add influxdb apt repository
+  apt_repository:
+    repo: '{{ item }}'
+    state: present
+    mode: 420
+    update_cache: yes
+    validate_certs: yes
+  with_items:
+    - 'deb https://repos.influxdata.com/ubuntu trusty stable'
+  sudo: yes
+
 - name: Install influxdb packages
   apt:
     pkg: '{{ item }}'
@@ -7,3 +25,23 @@
     cache_valid_time: 86400
     install_recommends: yes
   with_items: '{{ kernel_influxdb_packages }}'
+
+- name: Set permissions on directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: '{{ kernel_influxdb_remote_user }}'
+    group: '{{ kernel_influxdb_remote_user }}'
+    mode: u=rwx,g=rx,o=rx
+    recurse: yes
+  sudo: yes
+  with_items:
+    - /var/opt/influxdb
+    - /var/run/influxdb
+
+# It requires a provision to restart influxdb
+- name: Restart influxdb
+  service:
+    name: influxdb
+    state: restarted
+  sudo: yes
