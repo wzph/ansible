@@ -18,3 +18,5 @@ kernel_collectd_remote_user: override me
 kernel_collectd_log_file: /var/log/collectd.log
 
 kernel_collectd_port: 25286
+
+kernel_collectd_host: localhost
