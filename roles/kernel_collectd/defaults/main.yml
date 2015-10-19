@@ -3,10 +3,18 @@ kernel_collectd_packages:
   - collectd
   - collectd-utils
 
-# FQDNLookup true is the default.  Use 'Hostname ""' in your project to
+# FQDNLookup true is the default.  Use 'Hostname "..."' in your project to
 # hard code a value
 kernel_collectd_hostname: FQDNLookup true
 #kernel_collectd_hostname: Hostname "localhost"
 
 # Seconds
 kernel_collectd_default_interval: 10
+
+kernel_collectd_conf_file: /etc/collectd/collectd.conf
+
+kernel_collectd_remote_user: override me
+
+kernel_collectd_log_file: /var/log/collectd.log
+
+kernel_collectd_port: 25286

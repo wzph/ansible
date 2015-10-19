@@ -70,7 +70,7 @@
 
 
 - name: Locate service file
-  shell: readlink /opt/influxdb/influxd | xargs dirname
+  shell: readlink {{ kernel_influxdb_influx_executable }} | xargs dirname
   register: kernel_influxdb_version_path
 
 
@@ -93,3 +93,29 @@
     state: restarted
   sudo: yes
 
+
+- name: Wait for influxdb to start
+  shell: /bin/bash -c '{{ kernel_influxdb_influx_executable }} -execute "SHOW DATABASES"'
+  register: kernel_influxdb_health
+  until: "kernel_influxdb_health.rc == 0"
+  retries: 3
+  delay: 5
+  ignore_errors: yes
+
+
+- name: Create user
+  shell: '{{ kernel_influxdb_influx_executable }} -execute "CREATE USER {{ kernel_influxdb_username }} WITH PASSWORD ''{{ kernel_influxdb_password }}'' WITH ALL PRIVILEGES"'
+  sudo: yes
+  ignore_errors: yes
+  register: kernel_influxdb_user_creation
+
+
+- name: Quick exit
+  fail:
+    msg: '{{ kernel_influxdb_user_creation.stdout }}'
+  when: "kernel_influxdb_user_creation.rc != 0 and 'user already exists' not in kernel_influxdb_user_creation.stdout"
+
+
+- name: Create database
+  shell: '{{ kernel_influxdb_influx_executable }} -execute "CREATE DATABASE IF NOT EXISTS {{ kernel_influxdb_collectd_database }}"'
+  sudo: yes

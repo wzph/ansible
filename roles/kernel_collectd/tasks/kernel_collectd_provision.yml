@@ -10,6 +10,28 @@
   sudo: yes
 
 
+- name: Touch log file
+  file:
+    path: '{{ kernel_collectd_log_file }}'
+    owner: '{{ kernel_collectd_remote_user }}'
+    group: '{{ kernel_collectd_remote_user }}'
+    mode: u=rw,g=r,o=r
+    state: touch
+  sudo: yes
+
+
+- name: Place config
+  template:
+    owner: '{{ kernel_collectd_remote_user }}'
+    group: '{{ kernel_collectd_remote_user }}'
+    mode: u=rw,g=r,o=r
+    backup: yes
+    force: yes
+    src: collectd.conf
+    dest: '{{ kernel_collectd_conf_file }}'
+  sudo: yes
+
+
 - name: Restart collectd
   service:
     name: collectd
