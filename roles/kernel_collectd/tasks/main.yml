@@ -1,0 +1,8 @@
+---
+- name: Provision collectd
+  include: kernel_collectd_provision.yml
+  tags: "provision,collectd,provision:collectd"
+
+- name: Deploy collectd
+  include: kernel_collectd_deploy.yml
+  tags: "deploy,collectd,deploy:collectd"

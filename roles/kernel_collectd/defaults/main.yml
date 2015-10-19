@@ -1,0 +1,12 @@
+---
+kernel_collectd_packages:
+  - collectd
+  - collectd-utils
+
+# FQDNLookup true is the default.  Use 'Hostname ""' in your project to
+# hard code a value
+kernel_collectd_hostname: FQDNLookup true
+#kernel_collectd_hostname: Hostname "localhost"
+
+# Seconds
+kernel_collectd_default_interval: 10

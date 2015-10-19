@@ -6,6 +6,7 @@
     url: https://repos.influxdata.com/influxdb.key
   sudo: yes
 
+
 - name: Add influxdb apt repository
   apt_repository:
     repo: '{{ item }}'
@@ -17,6 +18,7 @@
     - 'deb https://repos.influxdata.com/ubuntu trusty stable'
   sudo: yes
 
+
 - name: Install influxdb packages
   apt:
     pkg: '{{ item }}'
@@ -25,6 +27,7 @@
     cache_valid_time: 86400
     install_recommends: yes
   with_items: '{{ kernel_influxdb_packages }}'
+
 
 - name: Set permissions on directories
   file:
@@ -39,9 +42,54 @@
     - /var/opt/influxdb
     - /var/run/influxdb
 
+
+- name: Configure init script
+  lineinfile:
+    dest: '{{ kernel_influxdb_init_script }}'
+    state: present
+    line: '{{ item.line }}'
+    regexp: '{{ item.regexp }}'
+  sudo: yes
+  with_items:
+    - { line: 'USER={{ kernel_influxdb_remote_user }}', regexp: '^USER=' }
+    - { line: 'GROUP={{ kernel_influxdb_remote_user }}', regexp: '^GROUP=' }
+    - { line: 'PIDFILE={{ kernel_influxdb_pid_file }}', regexp: '^PIDFILE=' }
+    - { line: 'CONFIG={{ kernel_influxdb_conf_file }}', regexp: '^CONFIG=' }
+
+
+- name: Place config
+  template:
+    owner: '{{ kernel_influxdb_remote_user }}'
+    group: '{{ kernel_influxdb_remote_user }}'
+    mode: u=rw,g=r,o=r
+    backup: yes
+    force: yes
+    src: influxdb.conf
+    dest: '{{ kernel_influxdb_conf_file }}'
+  sudo: yes
+
+
+- name: Locate service file
+  shell: readlink /opt/influxdb/influxd | xargs dirname
+  register: kernel_influxdb_version_path
+
+
+- name: Place service file
+  template:
+    owner: '{{ kernel_influxdb_remote_user }}'
+    group: '{{ kernel_influxdb_remote_user }}'
+    mode: u=rw,g=r,o=r
+    backup: yes
+    force: yes
+    src: influxdb.service
+    dest: '{{ kernel_influxdb_version_path.stdout }}/scripts/influxdb.service'
+  sudo: yes
+
+
 # It requires a provision to restart influxdb
 - name: Restart influxdb
   service:
     name: influxdb
     state: restarted
   sudo: yes
+

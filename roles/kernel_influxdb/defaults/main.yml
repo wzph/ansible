@@ -3,3 +3,16 @@ kernel_influxdb_packages:
   - influxdb
 
 kernel_influxdb_remote_user: override me
+
+kernel_influxdb_conf_file: /etc/opt/influxdb/influxdb.conf
+
+kernel_influxdb_pid_file: /var/run/influxdb/influxd.pid
+
+kernel_influxdb_init_script: /etc/init.d/influxdb
+
+kernel_influxdb_disable_reporting: true
+
+kernel_influxdb_data_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/data
+kernel_influxdb_meta_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/meta
+kernel_influxdb_wal_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/wal
+kernel_influxdb_hh_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/hh
