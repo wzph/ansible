@@ -56,15 +56,25 @@
   sudo: yes
 
 
-- name: Setup ufw
-  shell: ufw allow {{ item }}
+- name: Reset ufw
+  shell: yes | sudo ufw reset ; sudo ufw allow 22/tcp ; yes | sudo ufw enable
+  sudo: yes
+
+
+- name: Set ufw to block by default
+  shell: ufw default deny
+  sudo: yes
+
+
+- name: Specify allowable ports for ufw
+  shell: ufw {{ item }}
   sudo: yes
   with_items: '{{ kernel_security_ports }}'
 
 
-- name: Enable ufw
-  shell: echo 'y' | ufw enable
-  sudo: yes
+#- name: Enable ufw
+#  shell: echo 'y' | ufw enable
+#  sudo: yes
 
 
 #- name: Disallow root SSH access

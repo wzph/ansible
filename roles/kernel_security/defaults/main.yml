@@ -7,9 +7,9 @@ kernel_security_packages:
   - logwatch
 
 kernel_security_ports:
-  - 22/tcp
-  - 80/tcp
-  - 443/tcp
+  - allow 22/tcp
+  - allow 80/tcp
+  - allow 443/tcp
 
 kernel_security_root_password: Override me!
 
