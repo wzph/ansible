@@ -1,0 +1,8 @@
+---
+- name: Provision grafana
+  include: kernel_grafana_provision.yml
+  tags: "provision,grafana,provision:grafana"
+
+- name: Deploy grafana
+  include: kernel_grafana_deploy.yml
+  tags: "deploy,grafana,deploy:grafana"

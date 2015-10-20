@@ -1,0 +1,7 @@
+---
+- name: Start service
+  service:
+    name: grafana-server
+    state: started
+  sudo: yes
+

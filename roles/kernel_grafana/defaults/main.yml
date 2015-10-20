@@ -1,0 +1,36 @@
+---
+kernel_grafana_remote_user: override me
+
+kernel_grafana_packages:
+  - grafana
+
+kernel_grafana_data_dir: /var/lib/grafana
+
+kernel_grafana_log_dir: /var/log/grafana
+
+kernel_grafana_protocol: https
+
+kernel_grafana_port: 3000
+
+kernel_grafana_domain: localhost
+
+kernel_grafana_ssl_cert_file: '{{ kernel_grafana_data_dir }}/ssl.cert'
+kernel_grafana_ssl_key_file: '{{ kernel_grafana_data_dir }}/ssl.key'
+
+kernel_grafana_ssl_cert: override me
+kernel_grafana_ssl_key: override me
+
+kernel_grafana_database_type: postgres
+kernel_grafana_database_host: 127.0.0.1
+kernel_grafana_database_port: 5432
+kernel_grafana_database_name: grafana
+kernel_grafana_database_user: grafana
+kernel_grafana_database_password: override me
+kernel_grafana_postgres_ssl_mode: require
+kernel_grafana_sqlite3_path: grafana.db
+
+kernel_grafana_enable_reporting: 'false'
+
+kernel_grafana_admin_user: admin
+kernel_grafana_admin_password: override me
+kernel_grafana_secret_key: override me
