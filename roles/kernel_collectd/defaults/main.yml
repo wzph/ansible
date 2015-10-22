@@ -32,7 +32,7 @@ kernel_collectd_apt_repo: ppa:collectd/collectd-5.5
 kernel_collectd_network_plugin_auth_user: '{{ kernel_collectd_remote_user }}'
 kernel_collectd_network_plugin_auth_password: override me
 kernel_collectd_network_plugin_auth_file: /etc/collectd/passwd
-kernel_collectd_network_plugin_security_level: None
+kernel_collectd_network_plugin_security_level: Encrypt
 
 kernel_collectd_client_mode: yes
 kernel_collectd_server_mode: no
