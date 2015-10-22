@@ -1,4 +1,23 @@
 ---
+- name: Add the collectd apt key
+  apt_key:
+    state: present
+    validate_certs: yes
+    keyserver: '{{ kernel_collectd_apt_keyserver }}'
+    id: '{{ kernel_collectd_apt_key_id }}'
+  sudo: yes
+
+
+- name: Add the collectd apt repo
+  apt_repository:
+    repo: '{{ kernel_collectd_apt_repo }}'
+    state: present
+    mode: 420
+    update_cache: yes
+    validate_certs: yes
+  sudo: yes
+
+
 - name: Install collectd packages
   apt:
     pkg: '{{ item }}'

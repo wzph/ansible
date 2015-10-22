@@ -20,3 +20,7 @@ kernel_collectd_log_file: /var/log/collectd.log
 kernel_collectd_port: 25286
 
 kernel_collectd_host: localhost
+
+kernel_collectd_apt_keyserver: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x7543C08D555DC473B9270ACDAF7ECBB3476ACEB3
+kernel_collectd_apt_key_id: 476ACEB3
+kernel_collectd_apt_repo: ppa:collectd/collectd-5.5
