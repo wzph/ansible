@@ -17,10 +17,22 @@ kernel_collectd_remote_user: override me
 
 kernel_collectd_log_file: /var/log/collectd.log
 
-kernel_collectd_port: 25286
-
+# This is used by client (and server to listen to)
 kernel_collectd_host: localhost
+kernel_collectd_port: 25826
+
+# This is used by server to forward to
+kernel_collectd_upstream_host: localhost
+kernel_collectd_upstream_port: 25827
 
 kernel_collectd_apt_keyserver: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x7543C08D555DC473B9270ACDAF7ECBB3476ACEB3
 kernel_collectd_apt_key_id: 476ACEB3
 kernel_collectd_apt_repo: ppa:collectd/collectd-5.5
+
+kernel_collectd_network_plugin_auth_user: '{{ kernel_collectd_remote_user }}'
+kernel_collectd_network_plugin_auth_password: override me
+kernel_collectd_network_plugin_auth_file: /etc/collectd/passwd
+kernel_collectd_network_plugin_security_level: None
+
+kernel_collectd_client_mode: yes
+kernel_collectd_server_mode: no

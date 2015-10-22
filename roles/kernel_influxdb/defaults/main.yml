@@ -21,7 +21,7 @@ kernel_influxdb_wal_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/wal
 kernel_influxdb_hh_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/hh
 
 kernel_influxdb_collectd_host: 127.0.0.1
-kernel_influxdb_collectd_port: 25826
+kernel_influxdb_collectd_port: 25827
 
 kernel_influxdb_collectd_database: collectd
 

@@ -39,6 +39,19 @@
   sudo: yes
 
 
+- name: Place passwd
+  template:
+    owner: '{{ kernel_collectd_remote_user }}'
+    group: '{{ kernel_collectd_remote_user }}'
+    mode: u=rw,g=,o=
+    backup: yes
+    force: yes
+    src: passwd
+    dest: '{{ kernel_collectd_network_plugin_auth_file }}'
+  sudo: yes
+  when: kernel_collectd_server_mode
+
+
 - name: Place config
   template:
     owner: '{{ kernel_collectd_remote_user }}'
