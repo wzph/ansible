@@ -28,3 +28,12 @@ kernel_influxdb_collectd_database: collectd
 kernel_influxdb_influx_executable: /opt/influxdb/influx
 
 kernel_influxdb_collectd_types_db: /usr/share/collectd/types.db
+
+kernel_influxdb_admin_port: 8083
+kernel_influxdb_http_port: 8086
+kernel_influxdb_cluster_port: 8088
+
+kernel_influxdb_ssl_pem:  /etc/ssl/influxdb.pem
+kernel_influxdb_ssl_key: override me
+kernel_influxdb_ssl_cert: override me
+kernel_influxdb_ssl_enabled: 'true'
