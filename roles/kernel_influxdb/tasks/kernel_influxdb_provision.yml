@@ -103,7 +103,7 @@
   ignore_errors: yes
 
 
-- name: Create user
+- name: Create admin
   shell: '{{ kernel_influxdb_influx_executable }} -execute "CREATE USER {{ kernel_influxdb_username }} WITH PASSWORD ''{{ kernel_influxdb_password }}'' WITH ALL PRIVILEGES"'
   sudo: yes
   ignore_errors: yes
