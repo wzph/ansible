@@ -34,3 +34,5 @@ kernel_grafana_enable_reporting: 'false'
 kernel_grafana_admin_user: admin
 kernel_grafana_admin_password: override me
 kernel_grafana_secret_key: override me
+
+kernel_grafana_allow_sign_ups: 'false'
