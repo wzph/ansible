@@ -40,3 +40,4 @@ kernel_influxdb_ssl_cert: override me
 kernel_influxdb_ssl_enabled: 'true'
 
 kernel_influxdb_verify_certs: yes
+kernel_influxdb_enable_auth: 'true'
