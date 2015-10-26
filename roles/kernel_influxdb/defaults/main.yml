@@ -20,6 +20,7 @@ kernel_influxdb_meta_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/meta
 kernel_influxdb_wal_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/wal
 kernel_influxdb_hh_dir: /home/{{ kernel_influxdb_remote_user }}/.influxdb/hh
 
+kernel_influxdb_host: localhost
 kernel_influxdb_collectd_host: 127.0.0.1
 kernel_influxdb_collectd_port: 25827
 
@@ -37,3 +38,5 @@ kernel_influxdb_ssl_pem:  /etc/ssl/influxdb.pem
 kernel_influxdb_ssl_key: override me
 kernel_influxdb_ssl_cert: override me
 kernel_influxdb_ssl_enabled: 'true'
+
+kernel_influxdb_verify_certs: yes

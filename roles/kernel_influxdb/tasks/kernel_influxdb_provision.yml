@@ -86,6 +86,19 @@
   sudo: yes
 
 
+- name: Place pem file
+  template:
+    owner: '{{ kernel_influxdb_remote_user }}'
+    group: '{{ kernel_influxdb_remote_user }}'
+    mode: u=rw,g=r,o=r
+    backup: yes
+    force: yes
+    src: influxdb.pem
+    dest: '{{ kernel_influxdb_ssl_pem }}'
+  sudo: yes
+  when: kernel_influxdb_ssl_enabled == 'true'
+
+
 # It requires a provision to restart influxdb
 - name: Restart influxdb
   service:
@@ -94,8 +107,13 @@
   sudo: yes
 
 
+- name: Create curl command
+  set_fact:
+    curl: 'curl -G -s {% if kernel_influxdb_verify_certs %}{% else %}-k{% endif %} http{% if kernel_influxdb_ssl_enabled %}s{% endif %}://{{ kernel_influxdb_host  }}:{{ kernel_influxdb_http_port }}/query --data-urlencode'
+
+
 - name: Wait for influxdb to start
-  shell: /bin/bash -c '{{ kernel_influxdb_influx_executable }} -execute "SHOW DATABASES"'
+  shell: /bin/bash -c '{{ curl }} "q=SHOW DATABASES"'
   register: kernel_influxdb_health
   until: "kernel_influxdb_health.rc == 0"
   retries: 3
@@ -104,7 +122,7 @@
 
 
 - name: Create admin
-  shell: '{{ kernel_influxdb_influx_executable }} -execute "CREATE USER {{ kernel_influxdb_username }} WITH PASSWORD ''{{ kernel_influxdb_password }}'' WITH ALL PRIVILEGES"'
+  shell: /bin/bash -c '{{ curl }} "q=CREATE USER {{ kernel_influxdb_username }} WITH PASSWORD ''{{ kernel_influxdb_password }}'' WITH ALL PRIVILEGES"'
   sudo: yes
   ignore_errors: yes
   register: kernel_influxdb_user_creation
@@ -117,5 +135,5 @@
 
 
 - name: Create database
-  shell: '{{ kernel_influxdb_influx_executable }} -execute "CREATE DATABASE IF NOT EXISTS {{ kernel_influxdb_collectd_database }}"'
+  shell: /bin/bash -c '{{ curl }} "q=CREATE DATABASE IF NOT EXISTS {{ kernel_influxdb_collectd_database }}"'
   sudo: yes
