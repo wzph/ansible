@@ -5,6 +5,7 @@ kernel_postgresql_packages:
   - libpq-dev
   - python-psycopg2
 
+kernel_postgresql_remote_user: override me
 kernel_postgresql_username: override me
 kernel_postgresql_password: override me
 

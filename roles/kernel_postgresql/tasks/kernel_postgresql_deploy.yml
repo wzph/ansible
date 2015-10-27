@@ -61,20 +61,20 @@
 
 - name: Create .pgpass
   file:
-    path: ~{{ kernel_postgresql_username }}/.pgpass
+    path: ~{{ kernel_postgresql_remote_user }}/.pgpass
     state: touch
-    owner: '{{ kernel_postgresql_username }}'
-    group: '{{ kernel_postgresql_username }}'
+    owner: '{{ kernel_postgresql_remote_user }}'
+    group: '{{ kernel_postgresql_remote_user }}'
     mode: u=rw,g=,o=
   sudo: yes
 
 - name: Set up .pgpass
   lineinfile:
-    dest: ~{{ kernel_postgresql_username }}/.pgpass
+    dest: ~{{ kernel_postgresql_remote_user }}/.pgpass
     line: '{{ kernel_postgresql_host }}:{{ kernel_postgresql_port }}:{{ item }}:{{ kernel_postgresql_username }}:{{ kernel_postgresql_password }}'
     state: present
-    owner: '{{ kernel_postgresql_username }}'
-    group: '{{ kernel_postgresql_username }}'
+    owner: '{{ kernel_postgresql_remote_user }}'
+    group: '{{ kernel_postgresql_remote_user }}'
     mode: u=rw,g=,o=
   sudo: yes
   with_items: '{{ kernel_postgresql_databases }}'
