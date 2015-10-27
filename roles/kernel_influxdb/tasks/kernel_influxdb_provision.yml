@@ -122,7 +122,7 @@
 
 
 - name: Create admin
-  shell: /bin/bash -c '{{ curl }} "q=CREATE USER {{ kernel_influxdb_username }} WITH PASSWORD ''{{ kernel_influxdb_password }}'' WITH ALL PRIVILEGES"'
+  shell: /bin/bash -c '{{ curl }} "q=CREATE USER {{ kernel_influxdb_username }} WITH PASSWORD '"'"'{{ kernel_influxdb_password }}'"'"' WITH ALL PRIVILEGES"'
   sudo: yes
   ignore_errors: yes
   register: kernel_influxdb_user_creation
@@ -135,5 +135,5 @@
 
 
 - name: Create database
-  shell: /bin/bash -c '{{ curl }} "q=CREATE DATABASE IF NOT EXISTS {{ kernel_influxdb_collectd_database }}"'
+  shell: /bin/bash -c '{{ curl }} "q=CREATE DATABASE IF NOT EXISTS {{ kernel_influxdb_collectd_database }}" --data-urlencode "u={{ kernel_influxdb_username }}" --data-urlencode "p={{ kernel_influxdb_password }}"'
   sudo: yes
