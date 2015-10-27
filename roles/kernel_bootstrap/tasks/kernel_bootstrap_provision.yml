@@ -47,8 +47,8 @@
     dest: /home/{{ kernel_bootstrap_remote_user }}/.ssh/{{ item.src }}
   remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
   with_items:
-    - { src: kernel_bootstrap_id_rsa.pub, mode: 'u=rw,g=r,o=r' }
-    - { src: kernel_bootstrap_id_rsa, mode: 'u=rw,g=,o=' }
+    - { src: id_rsa.pub, mode: 'u=rw,g=r,o=r' }
+    - { src: id_rsa, mode: 'u=rw,g=,o=' }
 
 - name: Authorize current user's key
   authorized_key:
