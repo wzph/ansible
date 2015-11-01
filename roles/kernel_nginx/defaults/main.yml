@@ -24,3 +24,6 @@ kernel_nginx_ssl_directory: /etc/nginx/ssl
 
 kernel_nginx_ssl_key: Override me!
 kernel_nginx_ssl_cert: Override me!
+
+kernel_nginx_expose_status_locally: no
+kernel_nginx_status_location: /__nginx_status
