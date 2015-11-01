@@ -36,3 +36,8 @@ kernel_collectd_network_plugin_security_level: Encrypt
 
 kernel_collectd_client_mode: yes
 kernel_collectd_server_mode: no
+
+kernel_collectd_plugin_nginx: no
+kernel_collectd_plugin_nginx_status_url: https://127.0.0.1/__nginx_status
+kernel_collectd_plugin_nginx_verify_peer: 'false'
+kernel_collectd_plugin_nginx_verify_host: 'false'
