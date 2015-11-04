@@ -45,4 +45,4 @@ kernel_collectd_plugin_nginx_verify_host: 'false'
 kernel_collectd_plugin_memcached: no
 kernel_collectd_plugin_memcached_host: 127.0.0.1
 kernel_collectd_plugin_memcached_port: 11211
-kernel_collectd_plugin_instance_name: override me
+kernel_collectd_plugin_memcached_instance_name: override me
