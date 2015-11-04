@@ -1,16 +1,5 @@
 ---
-- name: Place pg_hba.conf
-  copy:
-    dest: '{{ item.dest }}'
-    src: '{{ item.src }}'
-    owner: '{{ kernel_postgresql_bootstrap_user }}'
-    group: '{{ kernel_postgresql_bootstrap_user }}'
-    mode: u=rw,g=r,o=
-  sudo: yes
-  with_items:
-    - { src: 'pg_hba.conf', dest: '/etc/postgresql/{{ kernel_postgresql_version }}/main/pg_hba.conf' }
-
-- name: Place postgresql.conf
+- name: Place conf files
   template:
     owner: '{{ kernel_postgresql_bootstrap_user }}'
     group: '{{ kernel_postgresql_bootstrap_user }}'
@@ -22,6 +11,7 @@
   sudo: yes
   with_items:
     - { src: 'postgresql.conf', dest: '/etc/postgresql/{{ kernel_postgresql_version }}/main/postgresql.conf' }
+    - { src: 'pg_hba.conf', dest: '/etc/postgresql/{{ kernel_postgresql_version }}/main/pg_hba.conf' }
 
 - name: Start postgresql
   service:

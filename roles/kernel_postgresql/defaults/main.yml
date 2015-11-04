@@ -18,3 +18,7 @@ kernel_postgresql_databases:
   - 'override'
 
 kernel_postgresql_log_prefix: '%t'
+
+kernel_postgresql_host_entries: |
+  # E.G.,
+  # host     all             kernel         192.168.1.0/24      md5'
