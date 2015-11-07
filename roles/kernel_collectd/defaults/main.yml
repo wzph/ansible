@@ -48,3 +48,9 @@ kernel_collectd_plugin_memcached_port: 11211
 kernel_collectd_plugin_memcached_instance_name: override me
 
 kernel_collectd_plugin_postgresql: no
+
+kernel_collectd_plugin_curl_json: no
+kernel_collectd_plugin_curl_json_urls: |
+  override me
+  see curl_json at
+  https://collectd.org/documentation/manpages/collectd.conf.5.shtml
