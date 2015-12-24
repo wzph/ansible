@@ -40,6 +40,7 @@
     line: "PasswordAuthentication no"
     state: present
   sudo: yes
+  when: kernel_security_allow_password_authentication is undefined or not kernel_security_allow_password_authentication
 
 
 - name: Adjust APT update intervals
@@ -71,20 +72,6 @@
   shell: ufw {{ item }}
   sudo: yes
   with_items: '{{ kernel_security_ports }}'
-
-
-#- name: Enable ufw
-#  shell: echo 'y' | ufw enable
-#  sudo: yes
-
-
-#- name: Disallow root SSH access
-#  lineinfile:
-#    dest: /etc/ssh/sshd_config
-#    regexp: "^PermitRootLogin"
-#    line: "PermitRootLogin no"
-#    state: present
-#  sudo: yes
 
 
 - name: Don't hash known_hosts entries
