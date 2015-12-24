@@ -5,6 +5,7 @@ kernel_security_packages:
   - fail2ban
   - unattended-upgrades
   - logwatch
+  - ufw
 
 kernel_security_ports:
   - allow 22/tcp
@@ -12,4 +13,3 @@ kernel_security_ports:
   - allow 443/tcp
 
 kernel_security_root_password: Override me!
-
