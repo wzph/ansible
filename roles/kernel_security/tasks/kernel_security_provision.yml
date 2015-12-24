@@ -4,6 +4,7 @@
     name: root
     password: '{{ kernel_security_root_password }}'
   sudo: yes
+  when: kernel_security_skip_root_password is undefined or not kernel_security_skip_root_password
 
 
 - name: Upgrade apt to the lastest packages

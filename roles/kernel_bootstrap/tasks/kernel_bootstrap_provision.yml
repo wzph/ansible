@@ -6,7 +6,21 @@
     system: yes
   remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
 
-- name: Create kernel_bootstrap_remote_user user
+- name: Create kernel_bootstrap_remote_user user with password
+  user:
+    name: '{{ kernel_bootstrap_remote_user }}'
+    state: present
+    createhome: yes
+    password: '{{ kernel_bootstrap_remote_user_crypted_password }}'
+    force: no
+    generate_ssh_key: no
+    groups: '{{ kernel_bootstrap_remote_user }}'
+    group: '{{ kernel_bootstrap_remote_user }}'
+    shell: /bin/bash
+  remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
+  when: kernel_bootstrap_remote_user_crypted_password is defined and kernel_bootstrap_remote_user_crypted_password|length > 0
+
+- name: Create kernel_bootstrap_remote_user user without password
   user:
     name: '{{ kernel_bootstrap_remote_user }}'
     state: present
@@ -17,6 +31,7 @@
     group: '{{ kernel_bootstrap_remote_user }}'
     shell: /bin/bash
   remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
+  when: kernel_bootstrap_remote_user_crypted_password is undefined or kernel_bootstrap_remote_user_crypted_password|length == 0
 
 - name: Ensure kernel_bootstrap_remote_user is a sudoer
   lineinfile:
@@ -49,6 +64,7 @@
   with_items:
     - { src: id_rsa.pub, mode: 'u=rw,g=r,o=r' }
     - { src: id_rsa, mode: 'u=rw,g=,o=' }
+  when: kernel_bootstrap_skip_remote_ssh_key_placement is undefined or not kernel_bootstrap_skip_remote_ssh_key_placement
 
 - name: Authorize current user's key
   authorized_key:
@@ -58,3 +74,4 @@
     state: present
     user: '{{ kernel_bootstrap_remote_user }}'
   remote_user: '{{ kernel_bootstrap_remote_bootstrap_user }}'
+  when: kernel_bootstrap_skip_local_user_ssh_key is undefined or not kernel_bootstrap_skip_local_user_ssh_key
