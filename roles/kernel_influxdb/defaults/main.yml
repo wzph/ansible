@@ -1,6 +1,6 @@
 ---
 kernel_influxdb_packages:
-  - influxdb
+  - influxdb=0.9.6.1
 
 kernel_influxdb_remote_user: override me
 
