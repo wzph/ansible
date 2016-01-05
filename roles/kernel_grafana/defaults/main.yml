@@ -36,3 +36,11 @@ kernel_grafana_admin_password: override me
 kernel_grafana_secret_key: override me
 
 kernel_grafana_allow_sign_ups: 'false'
+
+kernel_grafana_enable_email: yes
+kernel_grafana_enable_signup_email: no
+kernel_grafana_email_from: over@ride.me
+kernel_grafana_email_smtp_host: over.ride.me
+kernel_grafana_email_username: overrideme
+kernel_grafana_email_password: overrideme
+

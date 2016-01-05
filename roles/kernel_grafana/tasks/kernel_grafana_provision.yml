@@ -19,15 +19,15 @@
   sudo: yes
 
 
-- name: Install grafana packages
-  apt:
-    pkg: '{{ item }}'
-    state: latest
-    update_cache: yes
-    cache_valid_time: 86400
-    install_recommends: yes
-  with_items: '{{ kernel_grafana_packages }}'
-  sudo: yes
+#- name: Install grafana packages
+#  apt:
+#    pkg: '{{ item }}'
+#    state: latest
+#    update_cache: yes
+#    cache_valid_time: 86400
+#    install_recommends: yes
+#  with_items: '{{ kernel_grafana_packages }}'
+#  sudo: yes
 
 
 - name: Place config
