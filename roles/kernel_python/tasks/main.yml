@@ -1,0 +1,4 @@
+---
+- name: Provision python
+  include: kernel_python_provision.yml
+  tags: "provision,python,provision:python"

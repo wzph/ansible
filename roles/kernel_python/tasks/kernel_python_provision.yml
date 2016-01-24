@@ -1,0 +1,14 @@
+---
+- name: Install python prereqs
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  sudo: yes
+  with_items: '{{ kernel_python_packages }}'
+
+- name: Upgrade pip
+  shell: bash -c "pip install --upgrade pip"
+  sudo: yes
