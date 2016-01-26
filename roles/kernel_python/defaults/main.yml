@@ -1,3 +1,4 @@
 ---
 kernel_python_packages:
   - python-pip
+  - python-dev
