@@ -10,7 +10,10 @@
 - name: Upgrade apt to the latest packages
   apt:
     upgrade: safe
+    install_recommends: yes
+    force: yes
   sudo: yes
+  when: kernel_security_force_upgrade_all_packages_to_latest is defined and kernel_security_force_upgrade_all_packages_to_latest
 
 
 - name: Install security prereqs

@@ -13,3 +13,5 @@ kernel_security_ports:
   - allow 443/tcp
 
 kernel_security_root_password: Override me!
+
+kernel_security_force_upgrade_all_packages_to_latest: no
