@@ -9,6 +9,7 @@
   with_items: '{{ kernel_common_team_members }}'
   when: kernel_common_team_members|length > 0
 
+
 - name: Install common packages
   apt:
     pkg: '{{ item }}'
@@ -17,3 +18,12 @@
     cache_valid_time: 86400
     install_recommends: yes
   with_items: '{{ kernel_common_packages }}'
+
+
+- name: Ensure github.com is a known host
+  lineinfile:
+    dest: '~/.ssh/known_hosts'
+    create: yes
+    state: present
+    line: "{{ lookup('pipe', 'ssh-keyscan -t rsa github.com') }}"
+    regexp: "^github\\.com"
