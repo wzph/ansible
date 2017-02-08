@@ -6,7 +6,7 @@
     update_cache: yes
     cache_valid_time: 86400
     install_recommends: yes
-  sudo: yes
+  become: yes
   with_items: '{{ kernel_memcached_packages }}'
 
 - name: Place config
@@ -18,13 +18,13 @@
     force: yes
     src: '{{ kernel_memcached_conf_template }}'
     dest: '{{ kernel_memcached_conf_file }}'
-  sudo: yes
+  become: yes
 
 - name: Restart memcached
   service:
     name: memcached
     state: restarted
-  sudo: yes
+  become: yes
 
 - name: Set permissions on log file
   file:
@@ -33,4 +33,4 @@
     owner: '{{ kernel_memcached_user }}'
     group: '{{ kernel_memcached_user }}'
     mode: u=rw,g=rw,o=r
-  sudo: yes
+  become: yes

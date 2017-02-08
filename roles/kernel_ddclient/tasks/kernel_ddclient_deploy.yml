@@ -3,5 +3,5 @@
   service:
     name: ddclient
     state: restarted
-  sudo: yes
+  become: yes
   when: kernel_ddclient_skip is undefined or not kernel_ddclient_skip

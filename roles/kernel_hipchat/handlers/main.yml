@@ -19,4 +19,4 @@
     validate_certs: '{{ kernel_hipchat_validate_certs }}'
   when: kernel_hipchat_message is defined
   connection: local
-  sudo: no
+  become: no

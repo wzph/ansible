@@ -18,7 +18,7 @@
     mode: u=rw,g=,o=
     backup: no
     force: yes
-  sudo: yes
+  become: yes
   with_items:
     - { dest: /etc/ddclient.conf, src: ddclient.conf }
     - { dest: /etc/default/ddclient, src: ddclient }

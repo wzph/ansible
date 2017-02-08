@@ -5,7 +5,7 @@
     validate_certs: yes
     keyserver: '{{ kernel_collectd_apt_keyserver }}'
     id: '{{ kernel_collectd_apt_key_id }}'
-  sudo: yes
+  become: yes
 
 
 - name: Add the collectd apt repo
@@ -15,7 +15,7 @@
     mode: 420
     update_cache: yes
     validate_certs: yes
-  sudo: yes
+  become: yes
 
 
 - name: Install collectd packages
@@ -26,7 +26,7 @@
     cache_valid_time: 86400
     install_recommends: yes
   with_items: '{{ kernel_collectd_packages }}'
-  sudo: yes
+  become: yes
 
 
 - name: Touch log file
@@ -36,7 +36,7 @@
     group: '{{ kernel_collectd_remote_user }}'
     mode: u=rw,g=r,o=r
     state: touch
-  sudo: yes
+  become: yes
 
 
 - name: Place passwd
@@ -48,7 +48,7 @@
     force: yes
     src: passwd
     dest: '{{ kernel_collectd_network_plugin_auth_file }}'
-  sudo: yes
+  become: yes
   when: kernel_collectd_server_mode
 
 
@@ -61,11 +61,11 @@
     force: yes
     src: collectd.conf
     dest: '{{ kernel_collectd_conf_file }}'
-  sudo: yes
+  become: yes
 
 
 - name: Restart collectd
   service:
     name: collectd
     state: restarted
-  sudo: yes
+  become: yes

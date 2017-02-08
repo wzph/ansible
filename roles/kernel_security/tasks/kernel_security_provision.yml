@@ -3,7 +3,7 @@
   user:
     name: root
     password: '{{ kernel_security_root_password }}'
-  sudo: yes
+  become: yes
   when: kernel_security_skip_root_password is undefined or not kernel_security_skip_root_password
 
 
@@ -12,7 +12,7 @@
     upgrade: safe
     install_recommends: yes
     force: yes
-  sudo: yes
+  become: yes
   when: kernel_security_force_upgrade_all_packages_to_latest is defined and kernel_security_force_upgrade_all_packages_to_latest
 
 
@@ -23,7 +23,7 @@
     update_cache: yes
     cache_valid_time: 86400
     install_recommends: yes
-  sudo: yes
+  become: yes
   with_items: '{{ kernel_security_packages }}'
 
 
@@ -33,7 +33,7 @@
     state: absent
     regexp: '^%sudo'
     validate: 'visudo -cf %s'
-  sudo: yes
+  become: yes
 
 
 - name: Disallow password authentication
@@ -42,7 +42,7 @@
     regexp: "^PasswordAuthentication"
     line: "PasswordAuthentication no"
     state: present
-  sudo: yes
+  become: yes
   when: kernel_security_allow_password_authentication is undefined or not kernel_security_allow_password_authentication
 
 
@@ -50,7 +50,7 @@
   copy:
     src: kernel_security_apt_periodic
     dest: /etc/apt/apt.conf.d/10periodic
-  sudo: yes
+  become: yes
 
 
 - name: Make sure unattended-upgrades only installs from {{ kernel_security_ubuntu_release }}-security
@@ -58,22 +58,22 @@
     dest: /etc/apt/apt.conf.d/50unattended-upgrades
     regexp: "{{ kernel_security_ubuntu_release }}-updates"
     state: absent
-  sudo: yes
+  become: yes
 
 
 - name: Reset ufw
   shell: yes | sudo ufw reset ; sudo ufw allow 22/tcp ; yes | sudo ufw enable
-  sudo: yes
+  become: yes
 
 
 - name: Set ufw to block by default
   shell: ufw default deny
-  sudo: yes
+  become: yes
 
 
 - name: Specify allowable ports for ufw
   shell: ufw {{ item }}
-  sudo: yes
+  become: yes
   with_items: '{{ kernel_security_ports }}'
 
 
@@ -84,11 +84,11 @@
     regexp: '^\s*HashKnownHosts'
     line: '    HashKnownHosts no'
     validate: 'echo %s > /dev/null ; sudo sshd -t' # %s must be present :(
-  sudo: yes
+  become: yes
 
 
 - name: Restart ssh
   service:
     name: ssh
     state: restarted
-  sudo: yes
+  become: yes

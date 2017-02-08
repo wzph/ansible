@@ -4,7 +4,7 @@
     state: present
     validate_certs: yes
     url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
-  sudo: yes
+  become: yes
 
 - name: Add postgresql apt repository
   apt_repository:
@@ -15,7 +15,7 @@
     validate_certs: yes
   with_items:
     - 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
-  sudo: yes
+  become: yes
 
 - name: Install postgresql and prereqs
   apt:
@@ -25,4 +25,4 @@
     cache_valid_time: 86400
     install_recommends: yes
   with_items: '{{ kernel_postgresql_packages }}'
-  sudo: yes
+  become: yes

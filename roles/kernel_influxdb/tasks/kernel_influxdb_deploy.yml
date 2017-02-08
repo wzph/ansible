@@ -5,4 +5,4 @@
   service:
     name: influxdb
     state: started
-  sudo: yes
+  become: yes

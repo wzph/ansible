@@ -6,7 +6,7 @@
     update_cache: yes
     cache_valid_time: 86400
     install_recommends: yes
-  sudo: yes
+  become: yes
   with_items: '{{ kernel_nginx_packages }}'
 
 
@@ -19,7 +19,7 @@
     force: yes
     src: '{{ kernel_nginx_conf_template }}'
     dest: '{{ kernel_nginx_conf_file }}'
-  sudo: yes
+  become: yes
 
 
 - name: Remove some defaults
@@ -29,7 +29,7 @@
   with_items:
     - /etc/nginx/sites-enabled/default
     - /etc/nginx/sites-available/default
-  sudo: yes
+  become: yes
 
 
 - name: Create ssl directory
@@ -39,7 +39,7 @@
     group: root
     path: '{{ kernel_nginx_ssl_directory }}'
     mode: u=rwx,g=rx,o=rx
-  sudo: yes
+  become: yes
 
 
 - name: Place ssl cert
@@ -50,7 +50,7 @@
     force: yes
     src: '{{ item.src }}'
     dest: '{{ kernel_nginx_ssl_directory }}/{{ item.dest }}'
-  sudo: yes
+  become: yes
   with_items:
     - { src: kernel_nginx_cert.crt, dest: cert.crt }
     - { src: kernel_nginx_cert.key, dest: cert.key }

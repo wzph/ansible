@@ -3,5 +3,5 @@
   service:
     name: grafana-server
     state: started
-  sudo: yes
+  become: yes
 

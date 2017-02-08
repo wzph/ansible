@@ -6,11 +6,11 @@
 
 - name: Stop passenger
   shell: /bin/bash -c "cd {{ kernel_passenger_root }} && bundle exec passenger stop --pid-file {{ kernel_passenger_pid_file }}"
-  sudo: no
+  become: no
   ignore_errors: yes
   when: kernel_passenger_restartable.rc == 0
 
 - name: Start passenger
   shell: /bin/bash -c "cd {{ kernel_passenger_root }} && bundle exec passenger start --address {{ kernel_passenger_host }} --port {{ kernel_passenger_port }} --daemonize --log-file {{ kernel_passenger_log_file }} --pid-file {{ kernel_passenger_pid_file }}"
-  sudo: no
+  become: no
   when: kernel_passenger_restartable.rc == 0

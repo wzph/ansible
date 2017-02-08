@@ -8,7 +8,7 @@
     include_dependencies: yes
     user_install: no
   with_items: '{{ kernel_sinatra_gems }}'
-  sudo: yes
+  become: yes
 
 - name: Set permissions on log file
   file:
@@ -17,4 +17,4 @@
     owner: '{{ kernel_sinatra_user }}'
     group: '{{ kernel_sinatra_user }}'
     mode: u=rw,g=rw,o=r
-  sudo: yes
+  become: yes

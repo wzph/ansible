@@ -22,13 +22,13 @@
     owner: root
     group: '{{ kernel_cassandra_remote_user }}'
     mode: u=rwx,g=rwx,o=rx
-  sudo: yes
+  become: yes
   with_items:
     - /var/log/cassandra
 
 - name: Turn off zone_reclaim_mode
   shell: /bin/bash -c "echo 0 > /proc/sys/vm/zone_reclaim_mode"
-  sudo: yes
+  become: yes
 
 - name: Cassandra limits a
   lineinfile:
@@ -41,7 +41,7 @@
     - cassandra - nofile 100000
     - cassandra - nproc 32768
     - cassandra - as unlimited
-  sudo: yes
+  become: yes
 
 - name: Cassandra limits b
   lineinfile:
@@ -54,7 +54,7 @@
     - '* - nofile 100000'
     - '* - nproc 32768'
     - '* - as unlimited'
-  sudo: yes
+  become: yes
 
 - name: Cassandra limits c
   lineinfile:
@@ -62,11 +62,11 @@
     create: yes
     line: vm.max_map_count = 131072
     state: present
-  sudo: yes
+  become: yes
 
 - name: Make the cassandra limits take effect
   shell: /bin/bash -c "sysctl -p {{ item }}"
-  sudo: yes
+  become: yes
   with_items:
     - /etc/security/limits.d/cassandra.conf
     - /etc/security/limits.conf
@@ -80,14 +80,14 @@
     force: yes
     src: '{{ item.src }}'
     dest: '{{ kernel_cassandra_cassandra_home }}/conf/{{ item.dest }}'
-  sudo: yes
+  become: yes
   with_items:
     - { src: logback.xml, dest: logback.xml }
 
 - name: Start cassandra
   shell: /bin/bash -c "nohup {{ kernel_cassandra_cassandra_home }}/bin/cassandra"
   ignore_errors: yes
-  sudo: no
+  become: no
 
 - name: Wait for cassandra to start
   shell: /bin/bash -c "{{ kernel_cassandra_cassandra_home }}/bin/cqlsh -e 'DESCRIBE keyspaces;'"
@@ -100,7 +100,7 @@
 - name: Stop cassandra
   shell: /bin/bash -c "kill -9 `ps aux | grep [c]assandra | awk '{print $2}'`"
   ignore_errors: yes
-  sudo: no
+  become: no
 
 - name: Wait for cassandra to stop
   shell: /bin/bash -c "{{ kernel_cassandra_cassandra_home }}/bin/cqlsh -e 'DESCRIBE keyspaces;'"
@@ -113,7 +113,7 @@
 - name: Start cassandra
   shell: /bin/bash -c "nohup {{ kernel_cassandra_cassandra_home }}/bin/cassandra"
   ignore_errors: yes
-  sudo: no
+  become: no
 
 - name: Wait for cassandra to start
   shell: /bin/bash -c "{{ kernel_cassandra_cassandra_home }}/bin/cqlsh -e 'DESCRIBE keyspaces;'"

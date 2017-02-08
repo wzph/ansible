@@ -5,7 +5,7 @@
     validate_certs: yes
     keyserver: '{{ kernel_java_apt_keyserver }}'
     id: '{{ kernel_java_apt_key_id }}'
-  sudo: yes
+  become: yes
 
 - name: Add the java apt repo
   apt_repository:
@@ -14,11 +14,11 @@
     mode: 420
     update_cache: yes
     validate_certs: yes
-  sudo: yes
+  become: yes
 
 - name: Accept the Java license before installing (silent option)
   shell: /bin/bash -c "echo debconf shared/accepted-oracle-license-v1-1 {{ item }} true | debconf-set-selections"
-  sudo: yes
+  become: yes
   with_items:
     - select
     - seen
@@ -31,4 +31,4 @@
     update_cache: yes
     cache_valid_time: 86400
     install_recommends: yes
-  sudo: yes
+  become: yes

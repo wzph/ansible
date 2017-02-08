@@ -4,7 +4,7 @@
     state: present
     validate_certs: yes
     url: https://packagecloud.io/gpg.key
-  sudo: yes
+  become: yes
 
 
 - name: Add grafana apt repository
@@ -16,7 +16,7 @@
     validate_certs: yes
   with_items:
     - 'deb https://packagecloud.io/grafana/stable/debian/ wheezy main'
-  sudo: yes
+  become: yes
 
 
 #- name: Install grafana packages
@@ -27,7 +27,7 @@
 #    cache_valid_time: 86400
 #    install_recommends: yes
 #  with_items: '{{ kernel_grafana_packages }}'
-#  sudo: yes
+#  become: yes
 
 
 - name: Place config
@@ -39,7 +39,7 @@
     force: yes
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
-  sudo: yes
+  become: yes
   with_items:
     - { src: grafana.ini, dest: /etc/grafana/grafana.ini }
 
@@ -53,7 +53,7 @@
     force: yes
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
-  sudo: yes
+  become: yes
   with_items:
     - { src: ssl.cert, dest: '{{ kernel_grafana_ssl_cert_file }}' }
     - { src: ssl.key, dest: '{{ kernel_grafana_ssl_key_file }}' }
@@ -65,7 +65,7 @@
     state: present
     regexp: '{{ item.regexp }}'
     line: '{{ item.line }}'
-  sudo: yes
+  become: yes
   with_items:
     - { regexp: '^GRAFANA_USER=', line: 'GRAFANA_USER={{ kernel_grafana_remote_user }}'}
     - { regexp: '^GRAFANA_GROUP=', line: 'GRAFANA_GROUP={{ kernel_grafana_remote_user }}'}
@@ -75,5 +75,5 @@
   service:
     name: grafana-server
     state: restarted
-  sudo: yes
+  become: yes
 
