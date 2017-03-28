@@ -36,7 +36,7 @@
     lc_collate: 'en_US.UTF-8'
     lc_ctype: 'en_US.UTF-8'
   become: yes
-  become_user: '{{ kernel_postgresql_bootstrap_user }}'  
+  become_user: '{{ kernel_postgresql_bootstrap_user }}'
   with_items: '{{ kernel_postgresql_databases }}'
 
 - name: Give user privileges
@@ -46,7 +46,7 @@
     priv: ALL
     role_attr_flags: SUPERUSER
   become: yes
-  become_user: '{{ kernel_postgresql_bootstrap_user }}'  
+  become_user: '{{ kernel_postgresql_bootstrap_user }}'
   with_items: '{{ kernel_postgresql_databases }}'
 
 - name: Create .pgpass
@@ -65,6 +65,7 @@
     state: present
     owner: '{{ kernel_postgresql_remote_user }}'
     group: '{{ kernel_postgresql_remote_user }}'
+    regexp: '^{{ kernel_postgresql_host }}:{{ kernel_postgresql_port }}:{{ item }}:{{ kernel_postgresql_username }}'
     mode: u=rw,g=,o=
   become: yes
   with_items: '{{ kernel_postgresql_databases }}'
