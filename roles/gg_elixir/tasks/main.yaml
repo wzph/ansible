@@ -1,0 +1,4 @@
+---
+- name: Provision elixir
+  include: gg_elixir_provision.yml
+  tags: "provision,elixir,provision:elixir"

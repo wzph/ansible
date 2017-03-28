@@ -1,0 +1,8 @@
+---
+gg_phoenix_packages:
+#  - nodejs
+#  - nodejs-legacy
+
+gg_phoenix_to_install: https://github.com/phoenixframework/archives/raw/master/phx_new.ez
+
+gg_phoenix_user: OVERRIDEME

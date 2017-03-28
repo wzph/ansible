@@ -1,0 +1,10 @@
+---
+- name: Install elixir packages
+  apt:
+    pkg: '{{ item }}'
+    state: present
+    update_cache: yes
+    cache_valid_time: 0
+    install_recommends: yes
+  with_items: '{{ gg_elixir_packages }}'
+  become: yes

@@ -1,0 +1,32 @@
+---
+- name: Probe erlang binary
+  stat: path=/usr/bin/erl
+  register: erlang_binary
+
+- name: Fetch erlang-solutions
+  get_url:
+    url: https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+    dest: /tmp/erlang-solutions_1.0_all.deb
+    validate_certs: yes
+  become: yes
+  when: erlang_binary.stat.exists == False
+
+- name: Install erlang-solutions
+  apt:
+    deb: /tmp/erlang-solutions_1.0_all.deb
+    state: present
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  become: yes
+  when: erlang_binary.stat.exists == False
+
+- name: Install erlang packages
+  apt:
+    pkg: '{{ item }}'
+    state: present
+    update_cache: yes
+    cache_valid_time: 0
+    install_recommends: yes
+  with_items: '{{ gg_erlang_packages }}'
+  become: yes

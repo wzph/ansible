@@ -1,0 +1,51 @@
+---
+- name: Check if elixir is installed
+  command: elixir -v
+  register: elixir_check
+
+
+- fail:
+    msg: "Please install elixir before installing phoenix."
+  when: "elixir_check.rc != 0"
+
+
+- name: Install phoenix packages
+  apt:
+    pkg: '{{ item }}'
+    state: present
+    update_cache: yes
+    cache_valid_time: 0
+    install_recommends: yes
+  with_items: '{{ gg_phoenix_packages }}'
+  become: yes
+
+
+- name: Install phoenix
+  command: mix archive.install {{ gg_phoenix_to_install }} --force
+  args:
+    chdir: '~{{ gg_phoenix_user }}'
+  become: yes
+  become_user: '{{ gg_phoenix_user }}'
+
+
+- name: Install rebar
+  command: mix local.rebar --force
+  args:
+    chdir: '~{{ gg_phoenix_user }}'
+  become: yes
+  become_user: '{{ gg_phoenix_user }}'
+
+
+- name: Check if brunch is installed
+  command: brunch -v
+  ignore_errors: yes
+  register: brunch_check
+
+
+- name: Install brunch
+  npm:
+    name: brunch
+    global: yes
+    state: present
+  become: yes
+  when: "brunch_check.rc != 0"

@@ -1,0 +1,4 @@
+---
+- name: Provision erlang
+  include: gg_erlang_provision.yml
+  tags: "provision,erlang,provision:erlang"

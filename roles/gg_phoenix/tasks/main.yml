@@ -1,0 +1,4 @@
+---
+- name: Provision phoenix
+  include: gg_phoenix_provision.yml
+  tags: "provision,phoenix,provision:phoenix"

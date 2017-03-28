@@ -1,0 +1,5 @@
+---
+gg_erlang_packages:
+  - esl-erlang
+  - erlang-manpages
+  - erlang-mode

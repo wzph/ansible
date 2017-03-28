@@ -1,0 +1,6 @@
+---
+gg_nodejs_apt_key_url: http://deb.nodesource.com/gpgkey/nodesource.gpg.key
+# The above is suboptimal ; see https://github.com/nodesource/distributions/issues/353
+
+gg_nodejs_packages:
+  - nodejs

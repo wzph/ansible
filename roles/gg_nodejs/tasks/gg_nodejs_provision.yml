@@ -1,0 +1,39 @@
+---
+- name: Check if nodejs is installed
+  command: nodejs -v
+  register: nodejs_check
+  ignore_errors: yes
+
+
+- name: Add the nodesource apt key
+  apt_key:
+    state: present
+    validate_certs: no
+    # The above is suboptimal ; see https://github.com/nodesource/distributions/issues/353
+    url: '{{ gg_nodejs_apt_key_url }}'
+  become: yes
+  when: "nodejs_check.rc != 0"
+
+
+- name: Add the nodejs apt repo
+  apt_repository:
+    repo: '{{ item }}'
+    state: present
+    mode: 420
+    update_cache: yes
+    validate_certs: no
+    # The above is suboptimal ; see https://github.com/nodesource/distributions/issues/353
+  with_items:
+    - 'deb http://deb.nodesource.com/node_7.x trusty main'
+  become: yes
+
+
+- name: Install nodejs packages
+  apt:
+    pkg: '{{ item }}'
+    state: latest
+    update_cache: yes
+    cache_valid_time: 86400
+    install_recommends: yes
+  with_items: '{{ gg_nodejs_packages }}'
+  become: yes
