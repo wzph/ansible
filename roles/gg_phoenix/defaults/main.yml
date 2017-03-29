@@ -1,5 +1,6 @@
 ---
 gg_phoenix_packages:
+  - inotify-tools
 #  - nodejs
 #  - nodejs-legacy
 
